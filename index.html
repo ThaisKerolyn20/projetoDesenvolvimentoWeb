@@ -10,22 +10,21 @@
 <body>
   <header>
     <nav>
-        <div class="logo">💙 Voluntários</div>
-        <button class="menu-toggle" onclick="toggleMenu()">☰</button> 
-        <ul id="navMenu">
-            <li><a href="#" onclick="navigate('home')" id="nav-home">Início</a></li>
-            
-            <li class="dropdown-item">
-                <a href="#" onclick="navigate('projects')" id="nav-projects">Projetos ▼</a> 
-                <ul class="dropdown-menu">
-                    <li><a href="#" onclick="navigate('projects', '#educacao')">Educação</a></li>
-                    <li><a href="#" onclick="navigate('projects', '#saude')">Saúde</a></li>
-                    <li><a href="#" onclick="navigate('projects', '#cultura')">Cultura</a></li>
-                </ul>
-            </li>
-            <li><a href="#" onclick="navigate('cadastro')" id="nav-cadastro">Seja Voluntário</a></li>
-        </ul>
-    </nav>
+    <div class="logo">💙 Voluntários</div>
+    <button class="menu-toggle" onclick="toggleMenu()">☰</button> 
+    <ul id="navMenu">
+        <li><a onclick="navigate('home', '', event)" id="nav-home" href="#home">Início</a></li> 
+        <li class="dropdown-item">
+            <a onclick="navigate('projects', '', event)" id="nav-projects" href="#projects">Projetos ▼</a> 
+            <ul class="dropdown-menu">
+                <li><a onclick="navigate('projects', '#educacao', event)" href="#projects">Educação</a></li>
+                <li><a onclick="navigate('projects', '#saude', event)" href="#projects">Saúde</a></li>
+                <li><a onclick="navigate('projects', '#cultura', event)" href="#projects">Cultura</a></li>
+            </ul>
+        </li>
+        <li><a onclick="navigate('cadastro', '', event)" id="nav-cadastro" href="#cadastro">Seja Voluntário</a></li>
+    </ul>
+</nav>
   </header>
 
   <main id="app-content"></main>
