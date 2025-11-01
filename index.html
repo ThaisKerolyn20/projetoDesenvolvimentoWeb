@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Organização de Voluntários - SPA</title>
+  <link rel="stylesheet" href="style.css" />
+  <script defer src="script.js"></script>
+</head>
+<body>
+  <header>
+    <nav>
+        <div class="logo">💙 Voluntários</div>
+        <button class="menu-toggle" onclick="toggleMenu()">☰</button> 
+        <ul id="navMenu">
+            <li><a href="#" onclick="navigate('home')" id="nav-home">Início</a></li>
+            
+            <li class="dropdown-item">
+                <a href="#" onclick="navigate('projects')" id="nav-projects">Projetos ▼</a> 
+                <ul class="dropdown-menu">
+                    <li><a href="#" onclick="navigate('projects', '#educacao')">Educação</a></li>
+                    <li><a href="#" onclick="navigate('projects', '#saude')">Saúde</a></li>
+                    <li><a href="#" onclick="navigate('projects', '#cultura')">Cultura</a></li>
+                </ul>
+            </li>
+            <li><a href="#" onclick="navigate('cadastro')" id="nav-cadastro">Seja Voluntário</a></li>
+        </ul>
+    </nav>
+  </header>
+
+  <main id="app-content"></main>
+
+  <footer>
+    <p>&copy; 2025 Organização de Voluntários. Todos os direitos reservados.</p>
+    <p>Feito com ❤️ para transformar vidas</p>
+  </footer>
+</body>
+</html>
