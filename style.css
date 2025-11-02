@@ -1,5 +1,4 @@
 :root {
-  /* Paleta de cores */
   --color-primary: #667eea;
   --color-secondary: #764ba2;
   --color-accent: #ffb703;
@@ -8,16 +7,12 @@
   --color-warning: #dd6b20;
   --color-light: #f7fafc;
   --color-dark: #2d3748;
-
-  /* Tipografia */
   --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   --fs-xl: 3rem;
   --fs-lg: 2rem;
   --fs-md: 1.25rem;
   --fs-sm: 1rem;
   --fs-xs: 0.875rem;
-
-  /* Espaçamentos (sistema modular 8px) */
   --space-8: 8px;
   --space-16: 16px;
   --space-24: 24px;
@@ -26,7 +21,6 @@
   --space-64: 64px;
 }
 
-/* Reset */
 * {
   margin: 0;
   padding: 0;
@@ -36,13 +30,10 @@
 body {
   font-family: var(--font-family);
   color: var(--color-dark);
-  line-height: 1.6;
   background: var(--color-light);
+  line-height: 1.6;
 }
 
-/* ==========================
-   Header
-   ========================== */
 header {
   background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
   color: white;
@@ -62,251 +53,107 @@ nav {
   margin: 0 auto;
 }
 
-.logo {
-  font-size: var(--fs-lg);
-  font-weight: bold;
+.logo { font-size: var(--fs-lg); font-weight: bold; }
+
+nav ul { list-style: none; display: flex; gap: var(--space-24); }
+nav a { color: white; text-decoration: none; font-weight: 500; opacity: 0.9; transition: opacity 0.3s; }
+nav a:hover, nav a.active { opacity: 1; font-weight: bold; }
+
+/* REQUISITO: Foco visível para navegação por teclado */
+a:focus, button:focus, input:focus, .btn-primary:focus, .btn-secondary:focus {
+    outline: 3px solid var(--color-accent); 
+    outline-offset: 2px;
 }
 
-nav ul {
-  list-style: none;
-  display: flex;
-  gap: var(--space-24);
-}
+.menu-toggle { display: none; font-size: var(--fs-lg); background: none; color: white; border: none; cursor: pointer; }
 
-nav a {
-  color: white;
-  text-decoration: none;
-  font-weight: 500;
-  opacity: 0.8;
-  transition: opacity 0.3s;
-}
+/* Adicionado outline: none ao main apenas quando for focado via script */
+main:focus { outline: none; }
 
-nav a:hover,
-nav a.active {
-  opacity: 1;
-  font-weight: bold;
-}
+main { display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--space-24); max-width: 1200px; margin: 100px auto; padding: var(--space-16); }
+section { grid-column: span 12; }
 
-/* Menu mobile */
-.menu-toggle {
-  display: none;
-  font-size: var(--fs-lg);
-  background: none;
-  color: white;
-  border: none;
-}
+.hero { background: linear-gradient(rgba(102, 126, 234, 0.8), rgba(118, 75, 162, 0.8)); color: white; text-align: center; padding: var(--space-64) var(--space-16); border-radius: 12px; margin-top: 70px; }
+.hero h1 { font-size: var(--fs-xl); margin-bottom: var(--space-16); }
+.hero p { font-size: var(--fs-md); margin-bottom: var(--space-24); }
 
-/* ==========================
-   Layout Principal com Grid
-   ========================== */
-main {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: var(--space-24);
-  max-width: 1200px;
-  margin: 100px auto;
-  padding: var(--space-16);
-}
-
-/* Seções */
-section {
-  grid-column: span 12;
-}
-
-/* Hero */
-.hero {
-    background: linear-gradient(rgba(102, 126, 234, 0.8), rgba(118, 75, 162, 0.8)),
-                url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><rect fill="%23f0f0f0" width="1200" height="600"/></svg>');
-    background-size: cover;
-    background-position: center;
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    color: white;
-    margin-top: 70px;
-}
-
-.hero h1 {
-  font-size: var(--fs-xl);
-  margin-bottom: var(--space-16);
-}
-
-.hero p {
-  font-size: var(--fs-md);
-  margin-bottom: var(--space-24);
-}
-
-/* Botões */
 .btn-primary, .btn-secondary {
-  display: inline-block;
-  padding: var(--space-16) var(--space-32);
-  border-radius: 50px;
-  border: none;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  font-weight: bold;
-  box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+  display: inline-block; padding: var(--space-16) var(--space-32);
+  border-radius: 50px; border: none; cursor: pointer;
+  transition: all 0.3s ease; font-weight: bold; box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+}
+.btn-primary { background: var(--color-primary); color: white; }
+.btn-secondary { background: var(--color-secondary); color: white; }
+.btn-primary:hover, .btn-secondary:hover { transform: translateY(-3px); }
+
+.impact-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--space-24); margin-top: var(--space-32); }
+.card { background: white; border-radius: 12px; padding: var(--space-24); box-shadow: 0 4px 12px rgba(0,0,0,0.1); text-align: center; }
+
+form fieldset { border: 1px solid #ccc; border-radius: 8px; padding: var(--space-16); margin-bottom: var(--space-24); }
+.form-group { margin-bottom: var(--space-16); }
+input, select, textarea { width: 100%; padding: var(--space-8) var(--space-16); border-radius: 6px; border: 1px solid #ccc; font-size: var(--fs-sm); }
+
+/* ARIA: Adicionado role="alert" para leitores de tela */
+.success-message { display: none; background: var(--color-success); color: white; padding: var(--space-16); border-radius: 8px; text-align: center; margin-bottom: var(--space-24); role: 'alert'; }
+
+.error-message { color: var(--color-error); font-size: var(--fs-xs); margin-top: 0.25rem; font-weight: 500; }
+input.is-invalid, select.is-invalid, textarea.is-invalid { border-color: var(--color-error) !important; box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.2) !important; }
+
+/* Dropdown */
+.dropdown-menu { 
+  position: absolute; /* Mudado de static para absolute para melhor visualização em desktop */
+  min-width: 150px;
+  display: none; 
+  background-color: var(--color-secondary); /* Cor para melhor contraste */
+  padding: var(--space-8); 
+  border-radius: 8px; 
+  z-index: 1001;
 }
 
-.btn-primary {
-  background: var(--color-primary);
-  color: white;
-}
-.btn-secondary {
-  background: var(--color-secondary);
-  color: white;
+@media (min-width: 1025px) {
+  .dropdown-item { position: relative; } /* Apenas no desktop para o absolute funcionar */
 }
 
-.btn-primary:hover,
-.btn-secondary:hover {
-  transform: translateY(-3px);
-}
-
-/* Cards */
-.impact-cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: var(--space-24);
-  margin-top: var(--space-32);
-}
-
-.card {
-  background: white;
-  border-radius: 12px;
-  padding: var(--space-24);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  text-align: center;
-}
-
-/* Formulários */
-form fieldset {
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: var(--space-16);
-  margin-bottom: var(--space-24);
-}
-
-.form-group {
-  margin-bottom: var(--space-16);
-}
-
-input, select, textarea {
-  width: 100%;
-  padding: var(--space-8) var(--space-16);
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  font-size: var(--fs-sm);
-}
-
-/* Feedback */
-.success-message {
-  display: none;
-  background: var(--color-success);
-  color: white;
-  padding: var(--space-16);
-  border-radius: 8px;
-  text-align: center;
-}
-
-/* ==========================
-   Responsividade
-   ========================== */
 @media (max-width: 1024px) {
-  nav ul {
-    display: none;
-  }
-  .menu-toggle {
-    display: block;
-  }
-  main {
-    grid-template-columns: repeat(6, 1fr);
-  }
+  nav ul { display: none; flex-direction: column; width: 100%; background: var(--color-secondary); position: absolute; top: 60px; left: 0; padding: 0; }
+  nav ul.open { display: flex; }
+  nav li { padding: var(--space-8) var(--space-32); width: 100%; }
+  .menu-toggle { display: block; }
+  main { grid-template-columns: repeat(6, 1fr); }
+  .dropdown-menu { position: static; background-color: rgba(0, 0, 0, 0.2); margin-top: var(--space-8); } /* Retorna a static no mobile */
 }
 
 @media (max-width: 768px) {
-  .hero h1 {
-    font-size: var(--fs-lg);
-  }
-  main {
-    grid-template-columns: repeat(4, 1fr);
-  }
+  .hero h1 { font-size: var(--fs-lg); }
+  main { grid-template-columns: repeat(4, 1fr); }
 }
-
 @media (max-width: 480px) {
-  .hero {
-    padding: var(--space-48) var(--space-16);
+  .hero { padding: var(--space-48) var(--space-16); }
+  main { grid-template-columns: repeat(2, 1fr); }
+}
+
+footer { text-align: center; padding: var(--space-24); background: #f5f5f5; margin-top: var(--space-32); }
+
+/* REQUISITO: Modo Escuro e Alto Contraste */
+@media (prefers-color-scheme: dark) {
+  body {
+    background: #1a202c; /* Fundo escuro */
+    color: #e2e8f0; /* Texto claro */
   }
-  main {
-    grid-template-columns: repeat(2, 1fr);
+  
+  .card, form fieldset {
+    background: #2d3748; /* Componentes escuros */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
   }
-}
-
-footer {
-  text-align: center;
-  padding: var(--space-24);
-  background: #f5f5f5;
-  margin-top: var(--space-32);
-}
-
-/* Oculta o submenu no mobile (para simplificar a navegação vertical) */
-    .dropdown-menu {
-        position: static;
-        display: none;
-        background-color: rgba(0, 0, 0, 0.1);
-    }
-    
-    /* Estilos para a Validação de Consistência de Dados */
-
-/* Contêiner da mensagem de erro */
-.error-message {
-    color: var(--cor-feedback-error); /* Vermelho */
-    font-size: var(--font-size-small);
-    margin-top: 0.25rem;
-    font-weight: 500;
-}
-input.is-invalid, 
-select.is-invalid, 
-textarea.is-invalid {
-    border-color: var(--cor-feedback-error) !important;
-    box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.2) !important;
-}
-
-
-
-/* Garante que o input padrão não mostre a mensagem de erro padrão do browser */
-input:invalid:not(:focus):not(:placeholder-shown) {
-    border-color: #ccc; /* Mantém a cor neutra se não houver erro customizado */
-    box-shadow: none;
-}
-
-/* ===================================
-   9. ESTILOS DE VALIDAÇÃO DE FORMULÁRIO (Consistência de Dados)
-   =================================== */
-
-:root {
-  --color-error: #e53e3e; /* Cor do erro */
-}
-
-/* Campo com erro (destaca a borda) */
-input.is-invalid, 
-select.is-invalid, 
-textarea.is-invalid {
-    border-color: var(--color-error) !important;
-    /* Adiciona um shadow suave para destaque */
-    box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.2) !important; 
-}
-
-
-
-/* Ajuste para o success message */
-.success-message {
-    display: none; /* Mantido como 'none' para o JS controlar */
-    background: var(--color-success);
-    color: white;
-    padding: var(--space-16);
-    border-radius: 8px;
-    text-align: center;
-    margin-bottom: var(--space-24);
+  input, select, textarea {
+    background: #4a5568;
+    border: 1px solid #4a5568;
+    color: #e2e8f0;
+  }
+  footer {
+    background: #2d3748;
+    color: #e2e8f0;
+  }
+  /* Garante que o texto de erro continue com bom contraste */
+  .error-message { color: #feb2b2; } /* Vermelho mais claro sobre fundo escuro */
 }
