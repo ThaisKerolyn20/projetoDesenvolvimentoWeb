@@ -1,4 +1,4 @@
-// --- Templates SPA ---
+// --- Templates SPA (Sem alteração) ---
 const homeTemplate = `
 <section class="hero">
   <div class="hero-content">
@@ -44,7 +44,7 @@ const cadastroTemplate = `
 </section>
 <section class="signup-section">
   <h2>Cadastro de Voluntários</h2>
-  <div class="success-message" id="successMessage">✅ Cadastro realizado com sucesso!</div>
+  <div class="success-message" id="successMessage" aria-live="polite" role="alert">✅ Cadastro realizado com sucesso!</div>
   <form id="volunteerForm">
     <fieldset>
       <legend>Dados Pessoais</legend>
@@ -52,25 +52,25 @@ const cadastroTemplate = `
       <div class="form-group">
         <label for="nome">Nome *</label>
         <input type="text" id="nome" required minlength="5">
-        <div class="error-message" id="error-nome"></div>
+        <div class="error-message" id="error-nome" aria-live="polite"></div>
       </div>
 
       <div class="form-group">
         <label for="email">E-mail *</label>
         <input type="email" id="email" required>
-        <div class="error-message" id="error-email"></div>
+        <div class="error-message" id="error-email" aria-live="polite"></div>
       </div>
 
       <div class="form-group">
         <label for="telefone">Telefone *</label>
         <input type="tel" id="telefone" placeholder="(11) 99999-9999" required pattern="^\\(?([0-9]{2})\\)?[-.\\s]?([0-9]{4,5})[-.\\s]?([0-9]{4})$">
-        <div class="error-message" id="error-telefone"></div>
+        <div class="error-message" id="error-telefone" aria-live="polite"></div>
       </div>
 
       <div class="form-group">
         <label for="idade">Idade *</label>
         <input type="number" id="idade" min="16" max="100" required>
-        <div class="error-message" id="error-idade"></div>
+        <div class="error-message" id="error-idade" aria-live="polite"></div>
       </div>
 
     </fieldset>
@@ -85,7 +85,7 @@ const routes = {
   cadastro: cadastroTemplate,
 };
 
-// Função principal de navegação (CORRIGIDA)
+// Função principal de navegação (Melhorada para Acessibilidade)
 function navigate(route, anchor = '', event = null) {
   
   if (event) { // Se um evento de clique for fornecido (para os links do menu), previne o comportamento padrão
@@ -104,6 +104,9 @@ function navigate(route, anchor = '', event = null) {
 
   updateActiveLink(route);
   if (route === 'cadastro') setupCadastroForm();
+
+  // REQUISITO: Mover foco para o conteúdo principal para leitores de tela
+  app.focus(); 
 
   // Scroll para o topo
   window.scrollTo(0, 0);
@@ -134,12 +137,17 @@ window.addEventListener('popstate', e => {
   navigate(route);
 });
 
-// Menu Mobile
+// Menu Mobile (Melhorado para ARIA)
 function toggleMenu() {
-  document.getElementById('navMenu').classList.toggle('open');
+  const navMenu = document.getElementById('navMenu');
+  const menuToggle = document.querySelector('.menu-toggle');
+  const isExpanded = navMenu.classList.toggle('open');
+  
+  // REQUISITO: Atualiza atributo ARIA
+  menuToggle.setAttribute('aria-expanded', isExpanded); 
 }
 
-// --- Validação de Formulário ---
+// --- Validação de Formulário (Sem alteração significativa na lógica) ---
 function setupCadastroForm() {
   const form = document.getElementById('volunteerForm');
   if (!form) return;
@@ -163,11 +171,9 @@ function validateForm(form) {
   return ids.every(id => validateField(document.getElementById(id)));
 }
 
-// Função de validação de campo (CORRIGIDA - Regex de E-mail)
 function validateField(field) {
   let message = '';
   const value = field.value.trim();
-  // Regex de e-mail corrigida e segura
   const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[A-Za-z]{2,4}$/;
 
   if (!value) message = 'Campo obrigatório.';
@@ -190,29 +196,48 @@ function validateField(field) {
 function simulateSubmission(form) {
   const success = document.getElementById('successMessage');
   success.style.display = 'block';
+  // O foco é movido para o topo na navegação, garantindo que o leitor de tela leia a mensagem de sucesso se ele não estiver no topo da página.
   setTimeout(() => {
     success.style.display = 'none';
     navigate('home');
   }, 3000);
 }
 
-// --- Dropdown Interativo ---
+// --- Dropdown Interativo (Melhorado para ARIA) ---
 document.addEventListener('click', e => {
-  // Fecha dropdown ao clicar fora
+  const allDropdowns = document.querySelectorAll('.dropdown-menu');
+  const dropdownItem = e.target.closest('.dropdown-item');
+  
+  // Fecha dropdown ao clicar fora e desativa ARIA
   if (!e.target.closest('.dropdown-item') && !e.target.closest('.dropdown-menu')) {
-     document.querySelectorAll('.dropdown-menu').forEach(menu => (menu.style.display = 'none'));
+     allDropdowns.forEach(menu => {
+         menu.style.display = 'none';
+         menu.closest('.dropdown-item').querySelector('a').setAttribute('aria-expanded', 'false');
+     });
      return;
   }
   
   // Abre/Fecha dropdown ao clicar no item principal
-  if (e.target.closest('.dropdown-item')) {
-    const dropdown = e.target.closest('.dropdown-item').querySelector('.dropdown-menu');
-    // Fecha todos os outros
-    document.querySelectorAll('.dropdown-menu').forEach(menu => {
-        if (menu !== dropdown) menu.style.display = 'none';
+  if (dropdownItem) {
+    const dropdown = dropdownItem.querySelector('.dropdown-menu');
+    const dropdownLink = dropdownItem.querySelector('a');
+
+    // Fecha todos os outros e desativa ARIA
+    allDropdowns.forEach(menu => {
+        if (menu !== dropdown) {
+             menu.style.display = 'none';
+             menu.closest('.dropdown-item').querySelector('a').setAttribute('aria-expanded', 'false');
+        }
     });
-    // Alterna o atual
-    dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+
+    // Alterna o atual e atualiza ARIA
+    const isVisible = dropdown.style.display === 'block';
+    dropdown.style.display = isVisible ? 'none' : 'block';
+    dropdownLink.setAttribute('aria-expanded', isVisible ? 'false' : 'true');
+
+    // Fecha menu mobile
+    document.getElementById('navMenu').classList.remove('open');
+    document.querySelector('.menu-toggle').setAttribute('aria-expanded', 'false');
   }
 });
 
@@ -220,7 +245,11 @@ document.addEventListener('click', e => {
 const dropdownLinks = document.querySelectorAll('.dropdown-menu a');
 dropdownLinks.forEach(link => {
     link.addEventListener('click', () => {
-        document.querySelectorAll('.dropdown-menu').forEach(menu => (menu.style.display = 'none'));
+        document.querySelectorAll('.dropdown-menu').forEach(menu => {
+            menu.style.display = 'none';
+            menu.closest('.dropdown-item').querySelector('a').setAttribute('aria-expanded', 'false');
+        });
         document.getElementById('navMenu').classList.remove('open'); // Fecha menu mobile
+        document.querySelector('.menu-toggle').setAttribute('aria-expanded', 'false');
     });
 });

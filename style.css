@@ -56,10 +56,19 @@ nav {
 .logo { font-size: var(--fs-lg); font-weight: bold; }
 
 nav ul { list-style: none; display: flex; gap: var(--space-24); }
-nav a { color: white; text-decoration: none; font-weight: 500; opacity: 0.8; transition: opacity 0.3s; }
+nav a { color: white; text-decoration: none; font-weight: 500; opacity: 0.9; transition: opacity 0.3s; }
 nav a:hover, nav a.active { opacity: 1; font-weight: bold; }
 
-.menu-toggle { display: none; font-size: var(--fs-lg); background: none; color: white; border: none; }
+/* REQUISITO: Foco visível para navegação por teclado */
+a:focus, button:focus, input:focus, .btn-primary:focus, .btn-secondary:focus {
+    outline: 3px solid var(--color-accent); 
+    outline-offset: 2px;
+}
+
+.menu-toggle { display: none; font-size: var(--fs-lg); background: none; color: white; border: none; cursor: pointer; }
+
+/* Adicionado outline: none ao main apenas quando for focado via script */
+main:focus { outline: none; }
 
 main { display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--space-24); max-width: 1200px; margin: 100px auto; padding: var(--space-16); }
 section { grid-column: span 12; }
@@ -84,19 +93,36 @@ form fieldset { border: 1px solid #ccc; border-radius: 8px; padding: var(--space
 .form-group { margin-bottom: var(--space-16); }
 input, select, textarea { width: 100%; padding: var(--space-8) var(--space-16); border-radius: 6px; border: 1px solid #ccc; font-size: var(--fs-sm); }
 
-.success-message { display: none; background: var(--color-success); color: white; padding: var(--space-16); border-radius: 8px; text-align: center; margin-bottom: var(--space-24); }
+/* ARIA: Adicionado role="alert" para leitores de tela */
+.success-message { display: none; background: var(--color-success); color: white; padding: var(--space-16); border-radius: 8px; text-align: center; margin-bottom: var(--space-24); role: 'alert'; }
 
 .error-message { color: var(--color-error); font-size: var(--fs-xs); margin-top: 0.25rem; font-weight: 500; }
 input.is-invalid, select.is-invalid, textarea.is-invalid { border-color: var(--color-error) !important; box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.2) !important; }
 
-.dropdown-menu { position: static; display: none; background-color: rgba(0, 0, 0, 0.1); padding: var(--space-8); border-radius: 8px; }
-.dropdown-item:hover .dropdown-menu { display: block; }
+/* Dropdown */
+.dropdown-menu { 
+  position: absolute; /* Mudado de static para absolute para melhor visualização em desktop */
+  min-width: 150px;
+  display: none; 
+  background-color: var(--color-secondary); /* Cor para melhor contraste */
+  padding: var(--space-8); 
+  border-radius: 8px; 
+  z-index: 1001;
+}
+
+@media (min-width: 1025px) {
+  .dropdown-item { position: relative; } /* Apenas no desktop para o absolute funcionar */
+}
 
 @media (max-width: 1024px) {
-  nav ul { display: none; }
+  nav ul { display: none; flex-direction: column; width: 100%; background: var(--color-secondary); position: absolute; top: 60px; left: 0; padding: 0; }
+  nav ul.open { display: flex; }
+  nav li { padding: var(--space-8) var(--space-32); width: 100%; }
   .menu-toggle { display: block; }
   main { grid-template-columns: repeat(6, 1fr); }
+  .dropdown-menu { position: static; background-color: rgba(0, 0, 0, 0.2); margin-top: var(--space-8); } /* Retorna a static no mobile */
 }
+
 @media (max-width: 768px) {
   .hero h1 { font-size: var(--fs-lg); }
   main { grid-template-columns: repeat(4, 1fr); }
@@ -107,3 +133,27 @@ input.is-invalid, select.is-invalid, textarea.is-invalid { border-color: var(--c
 }
 
 footer { text-align: center; padding: var(--space-24); background: #f5f5f5; margin-top: var(--space-32); }
+
+/* REQUISITO: Modo Escuro e Alto Contraste */
+@media (prefers-color-scheme: dark) {
+  body {
+    background: #1a202c; /* Fundo escuro */
+    color: #e2e8f0; /* Texto claro */
+  }
+  
+  .card, form fieldset {
+    background: #2d3748; /* Componentes escuros */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  }
+  input, select, textarea {
+    background: #4a5568;
+    border: 1px solid #4a5568;
+    color: #e2e8f0;
+  }
+  footer {
+    background: #2d3748;
+    color: #e2e8f0;
+  }
+  /* Garante que o texto de erro continue com bom contraste */
+  .error-message { color: #feb2b2; } /* Vermelho mais claro sobre fundo escuro */
+}
